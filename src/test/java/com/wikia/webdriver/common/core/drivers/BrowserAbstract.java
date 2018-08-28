@@ -91,11 +91,11 @@ public abstract class BrowserAbstract {
         server = new NetworkTrafficInterceptor();
         server.setTrustAllServers(true);
         server.setConnectTimeout(90, TimeUnit.SECONDS);
+        server.setRequestTimeout(90, TimeUnit.SECONDS);
         server.setTrustSource(TrustSource.defaultTrustSource());
         server.setMitmDisabled(!Boolean.parseBoolean(Configuration.useMITM()));
-        server.setRequestTimeout(90, TimeUnit.SECONDS);
+        server.setUseEcc(Boolean.parseBoolean(Configuration.useMITM()));
         server.enableHarCaptureTypes(CaptureType.REQUEST_HEADERS, CaptureType.RESPONSE_HEADERS);
-        server.setUseEcc(true);
         proxyServer = server.startBrowserMobProxyServer();
       }
       caps.setCapability(CapabilityType.PROXY, proxyServer);
