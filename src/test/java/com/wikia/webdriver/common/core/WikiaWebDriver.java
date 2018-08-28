@@ -57,7 +57,8 @@ public class WikiaWebDriver extends EventFiringWebDriver {
   @Override
   public void quit() {
     if (proxy != null) {
-      proxy.stop();
+//      proxy.stop();
+      proxy.abort();
     }
     super.quit();
   }
