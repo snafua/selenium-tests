@@ -85,9 +85,9 @@ public class UserAvatar extends NewTestTemplate {
   }
 
   @Test(groups = "UserAvatar_staffUserCanSelectDefaultAvatar")
-  @Execute(asUser = User.SUS_STAFF2)
+  @Execute(asUser = User.SUS_STAFF)
   public void staffUserCanSelectDefaultAvatar() {
-    UserProfilePage profile = new UserProfilePage().open(User.SUS_STAFF2.getUserName());
+    UserProfilePage profile = new UserProfilePage().open(User.SUS_STAFF.getUserName());
     AvatarComponentObject avatar = profile.clickEditAvatar();
     profile.verifyAvatar();
 

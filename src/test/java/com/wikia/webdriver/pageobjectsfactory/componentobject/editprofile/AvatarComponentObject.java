@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 
 import java.io.File;
 import java.util.List;
-import java.util.Random;
 
 public class AvatarComponentObject extends WikiBasePageObject {
 
@@ -35,9 +34,11 @@ public class AvatarComponentObject extends WikiBasePageObject {
    * @return URL of the selected avatar
    */
   public String pickRandomDefaultAvatar() {
-    Random random = new Random();
-    int indexOfChosenAvatar = random.nextInt(defaultAvatarImages.size());
-    WebElement chosenAvatar = defaultAvatarImages.get(indexOfChosenAvatar);
+    WebElement chosenAvatar = defaultAvatarImages.stream()
+        .filter(e -> !"Avatar.jpg".equals(e.getAttribute("data-name")))
+        .findAny()
+        .get();
+
     String chosenAvatarSrc = chosenAvatar.getAttribute("src");
 
     chosenAvatar.click();
