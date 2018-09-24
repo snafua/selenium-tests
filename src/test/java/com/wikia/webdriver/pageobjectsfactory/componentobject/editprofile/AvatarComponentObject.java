@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.io.File;
+import java.util.List;
+import java.util.Random;
 
 public class AvatarComponentObject extends WikiBasePageObject {
 
@@ -14,6 +16,8 @@ public class AvatarComponentObject extends WikiBasePageObject {
   private WebElement uploadInput;
   @FindBy(css = "#UPPLightboxWrapper [data-event=save]")
   private WebElement saveButton;
+  @FindBy(className = "default-avatar")
+  private List<WebElement> defaultAvatarImages;
 
   public void uploadAvatar(String file) {
     File fileCheck = new File(
@@ -24,6 +28,23 @@ public class AvatarComponentObject extends WikiBasePageObject {
     }
     uploadInput.sendKeys(fileCheck.getAbsoluteFile().toString());
     Log.log("typeInFileToUploadPath", "type file " + file + " to upload it", true, driver);
+  }
+
+  /**
+   * Select one of the default avatars we offer for users.
+   * @return URL of the selected avatar
+   */
+  public String pickRandomDefaultAvatar() {
+    Random random = new Random();
+    int indexOfChosenAvatar = random.nextInt(defaultAvatarImages.size());
+    WebElement chosenAvatar = defaultAvatarImages.get(indexOfChosenAvatar);
+    String chosenAvatarSrc = chosenAvatar.getAttribute("src");
+
+    chosenAvatar.click();
+
+    Log.log("pickRandomDefaultAvatar","selected default avatar with source: " + chosenAvatarSrc, true, driver);
+
+    return chosenAvatarSrc;
   }
 
   public void saveProfile() {

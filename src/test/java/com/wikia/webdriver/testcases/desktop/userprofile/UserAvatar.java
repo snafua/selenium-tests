@@ -83,4 +83,23 @@ public class UserAvatar extends NewTestTemplate {
     Assertion.assertNotEquals(changedAvatarUrl, avatarUrl);
     changedProfile.verifyURLStatus(200, changedAvatarUrl);
   }
+
+  @Test(groups = "UserAvatar_staffUserCanSelectDefaultAvatar")
+  @Execute(asUser = User.SUS_STAFF2)
+  public void staffUserCanSelectDefaultAvatar() {
+    UserProfilePage profile = new UserProfilePage().open(User.SUS_STAFF2.getUserName());
+    AvatarComponentObject avatar = profile.clickEditAvatar();
+    profile.verifyAvatar();
+
+    String avatarUrl = profile.getAvatarImageSrc();
+    String selectedAvatarUrl = avatar.pickRandomDefaultAvatar();
+    avatar.saveProfile();
+
+    profile.verifyAvatarChanged(avatarUrl);
+    String changedAvatarUrl = profile.getAvatarImageSrc();
+    profile.verifyAvatarVisible();
+
+    Assertion.assertEquals(changedAvatarUrl, selectedAvatarUrl);
+    profile.verifyURLStatus(200, changedAvatarUrl);
+  }
 }

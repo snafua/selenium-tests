@@ -12,6 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class UserProfilePage extends WikiBasePageObject {
@@ -120,7 +122,16 @@ public class UserProfilePage extends WikiBasePageObject {
   }
 
   public String getAvatarImageSrc() {
-    return avatarWrapper.findElement(avatarImage).getAttribute("src");
+    String avatarSrc = avatarWrapper.findElement(avatarImage).getAttribute("src");
+    URI avatarUri = URI.create(avatarSrc);
+
+    // Normalize the URI - remove extraneous query parameters
+    try {
+      URI normalized = new URI(avatarUri.getScheme(), avatarUri.getHost(), avatarUri.getPath(), null);
+      return normalized.toString();
+    } catch (URISyntaxException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   public void verifyProfilePage(String userName) {
